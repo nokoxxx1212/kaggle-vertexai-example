@@ -1,0 +1,14 @@
+name: trainer
+description: trainer
+inputs:
+  - {name: transformed_data_path, {GCPPath: {data_type: CSV}}}
+outputs:
+  - {name: trained_model_path, {GCPPath: {data_type: PKL}}}
+implementation:
+  container:
+    image: gcr.io/${container_image_path}/trainer:latest
+    command: [python, src/trainer.py]
+    args: [
+      --transformed_data_path, {inputPath: transformed_data_path}
+      --trained_model_path, {outputPath: trained_model_path},
+    ]

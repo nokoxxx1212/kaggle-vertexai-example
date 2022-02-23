@@ -1,0 +1,14 @@
+name: transform
+description: transform
+inputs:
+  - {name: raw_data_path, {GCPPath: {data_type: CSV}}}
+outputs:
+  - {name: transformed_data_path, {GCPPath: {data_type: CSV}}}
+implementation:
+  container:
+    image: gcr.io/${container_image_path}/train:latest
+    command: [python, src/transform.py]
+    args: [
+      --raw_data_path, {inputPath: raw_data_path},
+      --transformed_data_path, {outputPath: transformed_data_path}
+    ]

@@ -1,0 +1,16 @@
+name: predictor
+description: predictor
+inputs:
+  - {name: transformed_data_path, {GCPPath: {data_type: CSV}}}
+  - {name: trained_model_path, {GCPPath: {data_type: PKL}}}
+outputs:
+  - {name: predicted_data_path, {GCPPath: {data_type: CSV}}}
+implementation:
+  container:
+    image: gcr.io/${container_image_path}/predictor:latest
+    command: [python, src/predictor.py]
+    args: [
+      --transformed_data_path, {inputPath: transformed_data_path}
+      --trained_model_path, {inputPath: trained_model_path},
+      --predicted_data_path, {outputPath: predicted_data_path},
+    ]
